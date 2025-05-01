@@ -1,0 +1,19 @@
+{
+  "appId": "com.bbh.app",
+  "appName": "Birat Biryani",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 3000,
+      "launchAutoHide": true,
+      "backgroundColor": "#F6F6F6",
+      "androidSplashResourceName": "splash_image",
+      "androidScaleType": "FIT_CENTER",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true,
+      "layoutName": "launch_screen",
+      "androidSplashResourceFolder": "drawable"
+    }
+  }
+}
