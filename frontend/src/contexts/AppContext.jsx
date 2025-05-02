@@ -8,6 +8,7 @@ export const AppContextProvider = ({children}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [cart, setCart] = useState(localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) || {} : []);
   const [cartUpdated, setCartUpdated] = useState(false);
+  const [vegMode, setVegMode] = useState(localStorage.getItem("vegMode") === "true");
   const checkUser = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/api/auth/user/check`);
@@ -61,6 +62,11 @@ export const AppContextProvider = ({children}) => {
       setCartUpdated(true);
     }
   }, [cart]);
+  
+  // Save vegMode to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem("vegMode", vegMode);
+  }, [vegMode]);
 
-  return <AppContext.Provider value={{cart, setCart, checkUser, user, setUser, isLoading, setIsLoading}}>{children}</AppContext.Provider>;
+  return <AppContext.Provider value={{cart, setCart, checkUser, user, setUser, isLoading, setIsLoading, vegMode, setVegMode}}>{children}</AppContext.Provider>;
 };

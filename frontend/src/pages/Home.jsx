@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from "react";
 import axios from "../axios";
 import Loader from "../components/Loader";
-import {Minus, Plus, Search, RefreshCw, Grid, List, ShoppingBag, Filter, Tag, ChevronRight, X} from "lucide-react";
+import {Minus, Plus, Search, RefreshCw, Grid, List, ShoppingBag, Filter, Tag, ChevronRight, X, XCircle} from "lucide-react";
 import {AppContext} from "../contexts/AppContext";
 import {useNavigate, Link} from "react-router-dom";
 import {toast} from "react-hot-toast";
@@ -20,7 +20,7 @@ const CategoryPill = ({category, isActive, onClick}) => (
 );
 
 const Home = () => {
-  const {cart, setCart} = useContext(AppContext);
+  const {cart, setCart, vegMode} = useContext(AppContext);
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
@@ -36,7 +36,7 @@ const Home = () => {
   const getProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${backendURL}/api/products/get`,);
+      const response = await axios.get(`${backendURL}/api/products/get`);
       if (response.data.status === "OK" && response.data.products.length > 0) {
         setProducts(response.data.products);
         setCart((prev) => {
@@ -88,7 +88,9 @@ const Home = () => {
 
     const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
 
-    return matchesSearch && matchesCategory;
+    const vegFilter = vegMode ? product.type === "Veg" : <></>;
+
+    return vegFilter && matchesSearch && matchesCategory;
   });
 
   const handleAddToCart = (product) => {
@@ -118,6 +120,8 @@ const Home = () => {
     });
   };
 
+  const handleClose = () => {};
+
   useEffect(() => {
     if (!AddToCartLoading) {
       setAddToCartLoading(true);
@@ -141,8 +145,8 @@ const Home = () => {
             <RefreshCw className={`w-5 h-5 ${refreshing ? "animate-spin" : ""}`} />
           </button>
         </div>
-
-        <div className="flex flex-wrap gap-2">
+        {/* View mode changer */}
+        {/* <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setViewMode("grid")}
             className={`p-2.5 transition-colors flex items-center rounded-md ${
@@ -159,7 +163,7 @@ const Home = () => {
             <List className="w-5 h-5 mr-1.5" />
             <span className="text-sm font-medium">List</span>
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -333,22 +337,32 @@ const Home = () => {
       {/* Cart Summary Bar */}
       {cart.length > 0 && (
         <div className="fixed lg:w-[80%] w-full right-0 lg:bottom-0 bottom-18   flex justify-center z-30">
-          <div className="m-4 w-full max-w-3xl bg-white rounded-md border border-gray-200 shadow-lg flex items-center justify-between p-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <ShoppingBag className="w-5 h-5 text-gray-700" />
-                <span className="font-medium flex items-center">
-                  {cart.length} item{cart.length !== 1 ? "s" : ""}
-                  <div className="text-lg font-bold ml-1">₹{cartTotal}</div>
-                </span>
+          <div className="m-4 w-full max-w-3xl bg-white rounded-md border border-gray-200 shadow-lg py-4">
+            {/* <span className="w-full flex items-center justify-between px-2 ">
+              <p className="font-bold">Summary</p>
+              <button
+                className=""
+                onClick={handleClose}>
+                <XCircle className="w-5 h-5 mb-1" />
+              </button>
+            </span> */}
+            <div className="flex items-center justify-between px-4 ">
+              <div>
+                <div className="flex items-center gap-2">
+                  <ShoppingBag className="w-5 h-5 text-gray-700" />
+                  <span className="font-medium flex items-center">
+                    {cart.length} item{cart.length !== 1 ? "s" : ""}
+                    <div className="text-lg font-bold ml-1">₹{cartTotal}</div>
+                  </span>
+                </div>
               </div>
+              <Link
+                to="/cart"
+                className="px-5 py-2.5 bg-gray-800 text-white hover:bg-gray-700 transition-colors flex items-center font-medium rounded-lg">
+                View Cart
+                <ChevronRight className="w-4 h-4 ml-1" />
+              </Link>
             </div>
-            <Link
-              to="/cart"
-              className="px-5 py-2.5 bg-gray-800 text-white hover:bg-gray-700 transition-colors flex items-center font-medium rounded-lg">
-              View Cart
-              <ChevronRight className="w-4 h-4 ml-1" />
-            </Link>
           </div>
         </div>
       )}

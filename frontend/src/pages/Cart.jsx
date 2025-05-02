@@ -20,7 +20,7 @@ const CategoryPill = ({category, isActive, onClick}) => (
 );
 
 const Cart = (props) => {
-  const {cart, user, setUser} = useContext(AppContext);
+  const {cart, user, setUser, vegMode} = useContext(AppContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [AddToCartLoading, setAddToCartLoading] = useState(true);

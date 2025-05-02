@@ -28,11 +28,6 @@ const Navbar = () => {
       icon: Utensils,
     },
     {
-      path: "/profile",
-      name: "Profile",
-      icon: User,
-    },
-    {
       path: "/records",
       name: "Records",
       icon: FileText,
@@ -70,24 +65,31 @@ const Navbar = () => {
 
       {/* Normal Mobile Bottom Navigation */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 dark:bg-zinc-900 dark:text-white text-black bg-white z-40">
-        <div className="flex justify-around items-center h-16 px-2">
+        <div className="flex justify-around items-center h-16 ">
           {navLinks.map((navLink, index) => (
             <Link
               key={index}
               to={navLink.path}
-              className="flex flex-col items-center justify-center w-[80px]">
+              className="flex flex-col items-center justify-center ">
               <div
                 className={`
               flex flex-col items-center justify-center px-4 py-2 rounded-md transition-all duration-200 relative
-              ${activeTab === navLink.path ? "text-black bg-black" : "text-gray-500"}
+              ${activeTab === navLink.path ? "text-black " : "text-black"}
             `}>
-                <navLink.icon
+                <span
                   className={`
-              w-5 h-5 transition-all duration-200
-              ${activeTab === navLink.path ? "scale-110 text-white" : "scale-100"}
+                    transition-all duration-200
+                  ${activeTab === navLink.path ? "p-3 bg-black rounded-full mt-[-30px] mb-2" : "scale-100"}
+                `}>
+                  <navLink.icon
+                    className={`
+              w-5 h-5 transition-all duration-200 
+              ${activeTab === navLink.path ? " text-white" : "scale-100"}
             `}
-                />
-                <span className={`text-xs font-medium ${activeTab === navLink.path ? "text-white" : "text-gray-500"}`}>{navLink.name}</span>
+                  />
+                </span>
+
+                <span className={`text-xs font-medium ${activeTab === navLink.path ? "text-black" : "text-black"}`}>{navLink.name}</span>
               </div>
             </Link>
           ))}

@@ -9,7 +9,7 @@ import {toast} from "react-hot-toast";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const FoodCard = (props) => {
-  const {cart, setCart, user, setUser} = useContext(AppContext);
+  const {cart, setCart, user, setUser, vegMode} = useContext(AppContext);
 
   const [AddToCartLoading, setAddToCartLoading] = useState(true);
 
@@ -68,7 +68,8 @@ const FoodCard = (props) => {
         updateCartInDB();
       }
       localStorage.setItem("cart", JSON.stringify(cart));
-      setUser((prev) => ({...prev, cart: cart}));
+      cart.length > 0 ? setUser((prev) => ({...prev, cart: cart})) : setUser((prev) => ({...prev, cart: []}));
+
       setAddToCartLoading(true);
     }
   }, [AddToCartLoading]);

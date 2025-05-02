@@ -1,10 +1,15 @@
 import React, {useContext, useState} from "react";
 import {AppContext} from "../contexts/AppContext";
 import {Link} from "react-router-dom";
-import {Search, Menu, Bell, User, LogOut, Settings} from "lucide-react";
+import {Search, Menu, Bell, User, LogOut, Settings, Leaf} from "lucide-react";
 
 const TopNavbar = () => {
-  const {user} = useContext(AppContext);
+  const {user, vegMode, setVegMode} = useContext(AppContext);
+
+  const toggleVegMode = () => {
+    // console.log("checked");
+    setVegMode((prev) => !prev);
+  };
 
   return (
     <>
@@ -14,7 +19,7 @@ const TopNavbar = () => {
             {/* Left side - User info */}
             <div className="flex items-center  ">
               <div className="relative ">
-                {user && user._id  ? (
+                {user && user._id ? (
                   <div className="w-10 h-10 bg-gradient-to-br from-black to-gray-700 text-zinc-200  rounded-full flex items-center justify-center font-bold shadow-md">
                     {user?.full_name?.charAt(0).toUpperCase()}
                   </div>
@@ -45,17 +50,28 @@ const TopNavbar = () => {
 
             {/* Right side - Actions */}
             <div className="flex items-center space-x-4">
-              {/* <Link
-            to="/search"
-            className="flex items-center justify-center w-10 h-10 dark:bg-zinc-800 dark:text-white dark:hover:bg-gray-700 bg-gray-100 text-gray-700 rounded-full  hover:bg-gray-200 transition-colors duration-200">
-            <Search className="w-5 h-5 " />
-          </Link> */}
-
-              <Link
-                to={"/settings"}
-                className="dark:bg-zinc-800 dark:text-white dark:hover:bg-gray-700 bg-gray-100 text-gray-700 flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors duration-200">
-                <Menu className="w-5 h-5 " />
-              </Link>
+              {/* Veg Mode Toggle Switch */}
+              <div className="flex items-center gap-2">
+                <div className="flex items-center">
+                  <h5 className="text-green-500 mr-1 text-sm">Veg Mode</h5>
+                  <div className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      id="vegMode"
+                      className="sr-only"
+                      checked={vegMode}
+                      onChange={toggleVegMode}
+                    />
+                    <label htmlFor="vegMode">
+                      <div
+                        className={`w-11 h-6 bg-gray-200 rounded-full after:absolute after:top-[2px] ${
+                          vegMode ? "after:left-[22px] bg-green-500" : "after:left-[2px]"
+                        } after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all `}></div>
+                    </label>
+                  </div>
+                  {/* <Leaf className={`w-4 h-4 ml-1.5 ${vegMode ? "text-green-500" : "text-gray-500"}`} /> */}
+                </div>
+              </div>
             </div>
           </div>
         </div>
