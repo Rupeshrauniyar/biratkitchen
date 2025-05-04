@@ -61,10 +61,8 @@ const App = () => {
             <TopNavbar />
             <Navbar />
           </div>
-          <div className="lg:w-[80%] sm:w-full lg:ml-[20%] sm:ml-0 p-2 overflow-x-hidden lg:h-[91%] h-[85%]">
+          <div className="lg:w-[80%] sm:w-full lg:ml-[20%] sm:ml-0 p-2 overflow-x-hidden lg:h-[91%] h-[85%] pb-12">
             <Container />
-
-            
           </div>
         </AppContextProvider>
       </Router>

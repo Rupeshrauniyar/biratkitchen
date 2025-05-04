@@ -67,7 +67,7 @@ const FoodCard = (props) => {
       if (user && user._id) {
         updateCartInDB();
       }
-      localStorage.setItem("cart", JSON.stringify(cart));
+      // localStorage.setItem("cart", JSON.stringify(cart));
       cart.length > 0 ? setUser((prev) => ({...prev, cart: cart})) : setUser((prev) => ({...prev, cart: []}));
 
       setAddToCartLoading(true);

@@ -15,18 +15,18 @@ const PlaceOrder = lazy(() => import("./pages/PlaceOrder"));
 const Container = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   useEffect(() => {
     const handleBackButton = () => {
-      if (location.pathname === '/') {
+      if (location.pathname === "/") {
         App.exitApp();
       } else {
         navigate(-1);
       }
     };
-    
-    App.addListener('backButton', handleBackButton);
-    
+
+    App.addListener("backButton", handleBackButton);
+
     return () => {
       App.removeAllListeners();
     };
@@ -35,6 +35,15 @@ const Container = () => {
   return (
     <Routes>
       <Route element={<UserMiddleware />}>
+        <Route
+          path="/"
+          element={<Home />}
+        />
+
+        <Route
+          path="/cart"
+          element={<Cart />}
+        />
         <Route
           path="/place-order"
           element={<PlaceOrder />}
@@ -58,15 +67,7 @@ const Container = () => {
           element={<Profile />}
         />
       </Route>
-      <Route
-        path="/"
-        element={<Home />}
-      />
 
-      <Route
-        path="/cart"
-        element={<Cart />}
-      />
       <Route
         path="/signin"
         element={<Signin />}

@@ -23,7 +23,6 @@ const Cart = (props) => {
   const {cart, user, setUser, vegMode} = useContext(AppContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [AddToCartLoading, setAddToCartLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid"); // grid or list
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -35,7 +34,7 @@ const Cart = (props) => {
   const total = subtotal + deliveryFee;
 
   // Filter products based on search term and category
-  const filteredProducts = cart?.filter((cartItem) => {
+  const filteredProducts = user?.cart?.filter((cartItem) => {
     const matchesSearch =
       cartItem.product.name.toLowerCase().includes(searchTerm.toLowerCase()) || cartItem.product.description.toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -44,12 +43,6 @@ const Cart = (props) => {
     return matchesSearch && matchesCategory;
   });
 
-  useEffect(() => {
-    if (!AddToCartLoading) {
-      setAddToCartLoading(true);
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
-  }, [AddToCartLoading]);
 
   return (
     <div className="min-h-screen ">
@@ -65,7 +58,7 @@ const Cart = (props) => {
                 <div>
                   <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Your Cart</h1>
                   <p className="text-gray-500 mt-1">
-                    {cart.length} item{cart.length !== 1 ? "s" : ""} in your cart
+                    {cart?.length} item{cart?.length !== 1 ? "s" : ""} in your cart
                   </p>
                 </div>
               </div>
@@ -127,7 +120,7 @@ const Cart = (props) => {
                     <p className="text-gray-600">Loading your cart...</p>
                   </div>
                 </div>
-              ) : user?.cart?.length > 0 ? (
+              ) : cart?.length > 0 ? (
                 filteredProducts && filteredProducts.length > 0 ? (
                   <div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -216,7 +209,7 @@ const Cart = (props) => {
       </div>
 
       {/* Mobile Sticky Checkout Bar */}
-      {cart.length > 0 && (
+      {cart?.length > 0 && (
         <div className="fixed lg:w-[80%] w-full right-0 lg:bottom-0 bottom-18   flex justify-center z-30">
           <div className="m-4 w-full max-w-3xl bg-white rounded-md border border-gray-200 shadow-lg flex items-center justify-between p-4">
             <div className="flex items-center">

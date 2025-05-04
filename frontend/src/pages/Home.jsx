@@ -67,13 +67,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (isUpdatable) {
-      localStorage.setItem("cart", JSON.stringify(cart));
-      setIsUpdatable(false);
-    }
-  }, [isUpdatable]);
-
-  useEffect(() => {
     getProducts();
   }, []);
 
@@ -122,19 +115,12 @@ const Home = () => {
 
   const handleClose = () => {};
 
-  useEffect(() => {
-    if (!AddToCartLoading) {
-      setAddToCartLoading(true);
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
-  }, [AddToCartLoading]);
-
   // Calculate cart totals
   const cartTotal = cart?.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
 
   return (
     <div className="w-full h-full">
-      {/* {console.log("p", products)} */}
+      {/* {console.log("p", cart)} */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
         <div className="flex items-center gap-3 mb-4 sm:mb-0">
           <h1 className="text-2xl font-bold text-gray-800">Our Menu</h1>

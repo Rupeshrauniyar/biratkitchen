@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import axios from "../axios";
 
 import {toast} from "react-hot-toast";
-import {Clock, Package, TruckIcon, CheckCircle, DollarSign, ShoppingBag, ChevronRight, Search, RefreshCw, ArrowUp, BarChart3} from "lucide-react";
+import {Clock, Package, TruckIcon, DollarSign, ShoppingBag, XCircle, RefreshCw, } from "lucide-react";
 import Loader from "../components/Loader";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -22,8 +22,8 @@ const StatCard = ({icon, title, value, bgColor, textColor}) => (
 const OrderStatusBadge = ({status}) => {
   const getStatusConfig = () => {
     switch (status) {
-      case "completed":
-        return {color: "bg-green-100 text-green-800", icon: <CheckCircle className="w-4 h-4 mr-1" />};
+      case "cancelled":
+        return {color: "bg-red-100 text-green-800", icon: <XCircle className="w-4 h-4 mr-1" />};
       case "processing":
         return {color: "bg-blue-100 text-blue-800", icon: <Clock className="w-4 h-4 mr-1" />};
       case "delivering":
@@ -80,9 +80,9 @@ const Dashboard = () => {
   // Stats for dashboard
   const totalOrders = orders.length;
   const pendingOrders = orders.filter((order) => order.status === "pending").length;
-  const processingOrders = orders.filter((order) => order.status === "processing").length;
-  const deliveringOrders = orders.filter((order) => order.status === "delivering").length;
-  const completedOrders = orders.filter((order) => order.status === "completed").length;
+  const shippedOrders = orders.filter((order) => order.status === "shipped").length;
+  const deliveredOrders = orders.filter((order) => order.status === "delivered").length;
+  const cancelledOrders = orders.filter((order) => order.status === "cancelled").length;
   const totalRevenue = orders.reduce((sum, order) => sum + (order.totalOrderPrice || 0), 0);
 
   // Format date
@@ -135,10 +135,10 @@ const Dashboard = () => {
               textColor="text-yellow-600"
             />
             <StatCard
-              icon={<CheckCircle className="w-6 h-6" />}
-              title="Completed"
-              value={completedOrders}
-              bgColor="bg-gradient-to-r from-green-50 to-green-100"
+              icon={<XCircle className="w-6 h-6" />}
+              title="Canceled"
+              value={cancelledOrders}
+              bgColor="bg-gradient-to-r from-red-50 to-red-100"
               textColor="text-green-600"
             />
             <StatCard
@@ -226,35 +226,35 @@ const Dashboard = () => {
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-500">Processing</span>
-                    <span className="text-sm font-medium text-gray-900">{processingOrders}</span>
+                    <span className="text-sm font-medium text-gray-500">Shipped</span>
+                    <span className="text-sm font-medium text-gray-900">{shippedOrders}</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2.5">
                     <div
                       className="bg-blue-500 h-2.5 rounded-full"
-                      style={{width: `${totalOrders ? (processingOrders / totalOrders) * 100 : 0}%`}}></div>
+                      style={{width: `${totalOrders ? (shippedOrders / totalOrders) * 100 : 0}%`}}></div>
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-500">Delivering</span>
-                    <span className="text-sm font-medium text-gray-900">{deliveringOrders}</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <div
-                      className="bg-orange-500 h-2.5 rounded-full"
-                      style={{width: `${totalOrders ? (deliveringOrders / totalOrders) * 100 : 0}%`}}></div>
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-500">Completed</span>
-                    <span className="text-sm font-medium text-gray-900">{completedOrders}</span>
+                    <span className="text-sm font-medium text-gray-500">Delivered</span>
+                    <span className="text-sm font-medium text-gray-900">{deliveredOrders}</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2.5">
                     <div
                       className="bg-green-500 h-2.5 rounded-full"
-                      style={{width: `${totalOrders ? (completedOrders / totalOrders) * 100 : 0}%`}}></div>
+                      style={{width: `${totalOrders ? (deliveredOrders / totalOrders) * 100 : 0}%`}}></div>
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-gray-500">Canceled</span>
+                    <span className="text-sm font-medium text-gray-900">{cancelledOrders}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div
+                      className="bg-red-500 h-2.5 rounded-full"
+                      style={{width: `${totalOrders ? (cancelledOrders / totalOrders) * 100 : 0}%`}}></div>
                   </div>
                 </div>
               </div>
